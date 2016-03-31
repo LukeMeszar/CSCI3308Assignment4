@@ -4,9 +4,26 @@
 #https://github.com/tdlm/fun-with-python/blob/master/states_and_capitals.py
 
 import urllib2
+from urllib2 import Request
 import requests
 import json
 from geopy.geocoders import Nominatim
+
+
+#returns the color corresponding to a certain temperature.
+def color(temp):
+    if(temp < 10 ):
+        return "blue"
+    elif(temp >= 10 and temp < 30):
+        return "cyan"
+    elif(temp >= 30 and temp < 50):
+        return "green"
+    elif(temp >= 50 and temp < 80):
+        return "orange"
+    elif (temp > 80):
+        return "red"
+    else:
+        return "gray"
 
 print ("Content-type: text/html")
 print ()
@@ -243,14 +260,17 @@ print '''
 <script>
 $( document ).ready(function() {
 '''
+
 for key in states_caps:
     for innner_key in states_caps[key]:
         if innner_key == "capital":
             location = geolocator.geocode(states_caps[key][innner_key])
+            request = Request('https://api.forecast.io/forecast/f237af5540899775849203c62143c9a5/%lat,%long,%t')
+            print string(request)
 
 
 for key in states_caps:
-    #print "$('#{0}').css('fill', 'red')".format(key)
+    print "$('#{0}').css('fill', 'red')".format(key)
 
 for key in states_caps:
     for innner_key in states_caps[key]:
@@ -260,19 +280,3 @@ print '''
 });
 </script>
 '''
-
-
-#returns the color corresponding to a certain temperature.
-def color(temp):
-    if(temp < 10 ):
-        return "blue"
-    elif(temp >= 10 and temp < 30):
-        return "cyan"
-    elif(temp >= 30 and temp < 50):
-        return "green"
-    elif(temp >= 50 and temp < 80):
-        return "orange"
-    elif (temp > 80):
-        return "red"
-    else:
-        return "gray"
