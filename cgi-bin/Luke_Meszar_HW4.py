@@ -253,3 +253,18 @@ print '''
 });
 </script>
 '''
+
+#returns the color corresponding to a certain temperature.
+def color(temp):
+    if(temp < 10 ):
+        return "blue"
+    elif(temp >= 10 and temp < 30):
+        return "cyan"
+    elif(temp >= 30 and temp < 50):
+        return "green"
+    elif(temp >= 50 and temp < 80):
+        return "orange"
+    elif (temp > 80):
+        return "red"
+    else:
+        return "gray"
