@@ -7,6 +7,7 @@ import urllib2
 from urllib2 import Request
 import requests
 import json
+import datetime
 from geopy.geocoders import Nominatim
 
 
@@ -265,8 +266,10 @@ for key in states_caps:
     for innner_key in states_caps[key]:
         if innner_key == "capital":
             location = geolocator.geocode(states_caps[key][innner_key])
-            request = Request('https://api.forecast.io/forecast/f237af5540899775849203c62143c9a5/%lat,%long,%t')
-            print string(request)
+            url = 'https://api.forecast.io/forecast/f237af5540899775849203c62143c9a5/{0},{1},{2}'.format(location.latitude, location.longitude, datetime.datetime.now())
+            print url
+            request = Request(url)
+            print request
 
 
 for key in states_caps:
