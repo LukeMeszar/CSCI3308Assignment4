@@ -260,3 +260,5 @@ print '''
 });
 </script>
 '''
+
+print "something"
