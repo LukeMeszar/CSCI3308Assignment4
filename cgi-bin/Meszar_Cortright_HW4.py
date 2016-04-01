@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
 #sources https://pointlessprogramming.wordpress.com/2011/02/13/python-cgi-tutorial-1/, http://stackoverflow.com/questions/13921910/python-urllib2-receive-json-response-from-url
-#https://github.com/tdlm/fun-with-python/blob/master/states_and_capitals.py
+#https://github.com/tdlm/fun-with-python/blob/master/states_and_capitals.py, https://geopy.readthedocs.org/en/1.10.0/
+#
 
 import urllib2
-from urllib2 import Request
 import requests
 import json
 import datetime
@@ -12,7 +12,7 @@ from geopy.geocoders import Nominatim
 
 
 #returns the color corresponding to a certain temperature.
-def color(temp):
+def pick_color(temp):
     if(temp < 10 ):
         return "blue"
     elif(temp >= 10 and temp < 30):
@@ -263,17 +263,20 @@ $( document ).ready(function() {
 '''
 
 for key in states_caps:
+    temperature = 0
     for innner_key in states_caps[key]:
         if innner_key == "capital":
             location = geolocator.geocode(states_caps[key][innner_key])
-            url = 'https://api.forecast.io/forecast/f237af5540899775849203c62143c9a5/{0},{1},{2}'.format(location.latitude, location.longitude, datetime.datetime.now())
-            print url
-            request = Request(url)
-            print request
+            url = 'https://api.forecast.io/forecast/f237af5540899775849203c62143c9a5/{0},{1}'.format(location.latitude, location.longitude)
+            #request = Request(url)
+            response = urllib2.urlopen(url)
+            data = json.load(response)
+            temperature = data['currently']['temperature']
+    color = pick_color(temperature)
+    print "$('#{0}').css('fill', '{1}')".format(key, color)
 
-
-for key in states_caps:
-    print "$('#{0}').css('fill', 'red')".format(key)
+#for key in states_caps:
+#    print "$('#{0}').css('fill', 'red')".format(key)
 
 for key in states_caps:
     for innner_key in states_caps[key]:
